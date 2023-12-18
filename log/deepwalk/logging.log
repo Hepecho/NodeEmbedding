@@ -1,0 +1,68 @@
+Namespace(seed=1, dataset='ogbl-ddi', emb_dir='saved_model', model='deepwalk', logdir='log')
+{'model_name': 'DeepWalk', 'graph': None, 'log_path': 'ogbl-ddi/log/DeepWalk', 'device': device(type='cuda'), 'seed': 1, 'walk_length': 10, 'num_walks': 80, 'batch_size': 1024, 'embed_size': 128, 'window_size': 5, 'learning_rate': 0.05, 'iter': 5, 'workers': 3, 'sg': 1, 'hs': 1, 'min_count': 0}
+======================Start simulate walks [Sat Dec 16 14:52:40 2023]======================
+torch.Size([341360, 10])
+======================Finish simulate walks [Sat Dec 16 14:52:42 2023]======================
+======================Start Train Model [Sat Dec 16 14:52:42 2023]======================
+======================Finish Train Model [Sat Dec 16 14:55:30 2023]======================
+Hits@10
+All runs:
+Highest Train: 3.00 ± 0.08
+Highest Valid: 2.69 ± 0.07
+  Final Train: 3.00 ± 0.08
+   Final Test: 0.65 ± 0.03
+Hits@20
+All runs:
+Highest Train: 3.42 ± 0.03
+Highest Valid: 3.06 ± 0.03
+  Final Train: 3.42 ± 0.03
+   Final Test: 0.78 ± 0.04
+Hits@30
+All runs:
+Highest Train: 3.69 ± 0.04
+Highest Valid: 3.29 ± 0.02
+  Final Train: 3.67 ± 0.06
+   Final Test: 0.89 ± 0.03
+
+Namespace(seed=1, dataset='ogbl-ddi', emb_dir='saved_model', model='deepwalk', logdir='log')
+{'model_name': 'DeepWalk', 'graph': None, 'log_path': 'ogbl-ddi/log/DeepWalk', 'device': device(type='cuda'), 'seed': 1, 'walk_length': 10, 'num_walks': 80, 'embed_size': 128, 'window_size': 5, 'learning_rate': 0.025, 'iter': 5, 'workers': 3, 'sg': 1, 'hs': 1, 'min_count': 0}
+======================Start simulate walks [Sat Dec 16 16:46:59 2023]======================
+torch.Size([341360, 10])
+======================Finish simulate walks [Sat Dec 16 16:47:00 2023]======================
+======================Start Train Model [Sat Dec 16 16:47:00 2023]======================
+======================Finish Train Model [Sat Dec 16 16:47:50 2023]======================
+Hits@10
+All runs:
+Highest Train: 25.47 ± nan
+Highest Valid: 22.66 ± nan
+  Final Train: 25.47 ± nan
+   Final Test: 6.13 ± nan
+Hits@20
+All runs:
+Highest Train: 32.40 ± nan
+Highest Valid: 28.92 ± nan
+  Final Train: 32.40 ± nan
+   Final Test: 9.42 ± nan
+Hits@30
+All runs:
+Highest Train: 34.90 ± nan
+Highest Valid: 31.15 ± nan
+  Final Train: 34.90 ± nan
+   Final Test: 14.07 ± nan
+Namespace(seed=1, dataset='ogbn-arxiv', emb_dir='saved_model', model='deepwalk', logdir='log')
+{'model_name': 'DeepWalk', 'graph': None, 'log_path': 'ogbn-arxiv/log/DeepWalk', 'device': device(type='cuda'), 'seed': 1, 'walk_length': 10, 'num_walks': 40, 'embed_size': 128, 'window_size': 5, 'learning_rate': 0.025, 'iter': 5, 'workers': 3, 'sg': 1, 'hs': 1, 'min_count': 0}
+======================Start simulate walks [Sat Dec 16 21:00:50 2023]======================
+torch.Size([6773720, 10])
+======================Finish simulate walks [Sat Dec 16 21:02:30 2023]======================
+======================Start Train Model [Sat Dec 16 21:02:30 2023]======================
+======================Finish Train Model [Sat Dec 16 21:29:10 2023]======================
+python src/evaluate_mlp.py --runs 5 --epochs 200 --dataset ogbn-arxiv
+Highest Train: 79.66
+Highest Valid: 71.47
+  Final Train: 78.27
+   Final Test: 70.40
+All runs:
+Highest Train: 79.67 ± 0.07
+Highest Valid: 71.43 ± 0.12
+  Final Train: 78.11 ± 0.46
+   Final Test: 70.25 ± 0.17
