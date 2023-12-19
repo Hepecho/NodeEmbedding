@@ -5,7 +5,6 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
-from torch_geometric.loader import DataLoader as tgDataLoader
 from torch_geometric.utils import negative_sampling
 import torch.optim as optim
 
@@ -15,20 +14,11 @@ from ogb.linkproppred import Evaluator as LinkEvaluator
 from ogb.nodeproppred import PygNodePropPredDataset
 from ogb.nodeproppred import Evaluator as NodeEvaluator
 
-from ogb.graphproppred import PygGraphPropPredDataset
-from ogb.graphproppred import Evaluator as GraphEvaluator
-
 from os.path import join as ospj
 import sys
 sys.path.insert(0, sys.path[0] + "/../")
 from model.logger import Logger
 from model.mlps import NodeMLP, LinkMLP
-from model.gnn import GNN
-
-
-# for grah classification
-cls_criterion = torch.nn.BCEWithLogitsLoss()
-reg_criterion = torch.nn.MSELoss()
 
 
 def LinkMLP_train(predictor, x, edge_index, split_edge, optimizer, batch_size):

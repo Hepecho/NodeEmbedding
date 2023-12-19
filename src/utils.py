@@ -13,6 +13,3 @@ class DotProductPredictor(nn.Module):
             return graph.edata['score']
 
 
-def make_undirected(G):
-    G.add_edges(G.edges()[1], G.edges()[0])
-    return G

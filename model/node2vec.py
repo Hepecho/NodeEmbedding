@@ -22,6 +22,10 @@ class Config(object):
         # self.num_epochs = 20                                            # epoch数
         # self.batch_size = 2048                                          # mini-batch大小
 
+        # node2vec控制参数
+        self.p = 4
+        self.q = 0.5
+
         # skip-gram模型参数
         self.embed_size = 128                                           # 向量的维度
         self.window_size = 5                                            # 上下文窗口大小
@@ -36,7 +40,7 @@ class Config(object):
 class Model:
     """Node2Vec"""
     def __init__(self, config):
-        self.walker = Node2VecWalker(config.graph)
+        self.walker = Node2VecWalker(config.graph, config.p, config.q)
         self.all_walks = None
         self.skip_gram_model = Word2Vec(vector_size=config.embed_size, window=config.window_size, sg=config.sg,
                                         hs=config.hs, min_count=config.min_count, workers=config.workers,
@@ -50,11 +54,45 @@ class Model:
         # proteins torch.Size([10602720, 10]) num_walks = 80
         # arxiv torch.Size([13547440, 10]) num_walks = 80
         logx.msg(str(self.all_walks.shape))
+        torch.save(self.all_walks, 'all_walks.pt')
         localtime = time.asctime(time.localtime(time.time()))
         logx.msg('======================Finish simulate walks [{}]======================'.format(localtime))
 
         localtime = time.asctime(time.localtime(time.time()))
         logx.msg('======================Start Train Model [{}]======================'.format(localtime))
+        sentences = self.all_walks.to(config.device)
+        sentences = sentences.tolist()
+        sentences_str = [[str(node_id) for node_id in node_sequence] for node_sequence in sentences]
+        # print(sentences)
+        # print(self.skip_gram_model.corpus_count)  # 0
+        self.skip_gram_model.build_vocab(sentences_str)
+        self.skip_gram_model.train(sentences_str, total_examples=self.skip_gram_model.corpus_count,
+                                   epochs=config.iter)
+        localtime = time.asctime(time.localtime(time.time()))
+        logx.msg('======================Finish Train Model [{}]======================'.format(localtime))
+        torch.save(self.skip_gram_model, 'skip_gram.pt')
+        return self.skip_gram_model
 
-    def save_embedding(self, config):
-        pass
+    def save_embedding(self, config, emb_path):
+        nodes_tensor = config.graph.nodes()
+        nodes_list = nodes_tensor.tolist()
+        vocab = self.skip_gram_model.wv.index_to_key
+        keys = sorted(vocab)
+        max_node_id = max(nodes_list)
+        if max_node_id + 1 != len(self.skip_gram_model.wv.key_to_index):
+            print("WARNING: The node ids are not serial.")
+            print(max_node_id)
+            print(len(self.skip_gram_model.wv.key_to_index))
+
+        embedding = torch.zeros(max_node_id + 1, config.embed_size)
+
+        # idx to key 将skip_gram_model中str(key == node id) --> vector转换成embedding中的 int(idx == node id) --> vector
+        idx2key_str = self.skip_gram_model.wv.index_to_key  # list类型
+        idx2key_int = [int(key_str) for key_str in idx2key_str]
+        # idx2key_int = [key_int for key_int in range(max_node_id + 1)]
+        idx2key_tensor = torch.tensor(idx2key_int, dtype=torch.long)
+
+        # 将 Word2Vec 模型的权重复制到 PyTorch 的 embedding 中
+        embedding.index_add_(0, idx2key_tensor, torch.from_numpy(self.skip_gram_model.wv.vectors))
+
+        torch.save(embedding, emb_path)

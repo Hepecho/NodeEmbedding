@@ -97,20 +97,6 @@ class Model:
         torch.save(self.skip_gram_model, 'temp.pt')
         return self.skip_gram_model
 
-    def get_embeddings(self, config):
-        embeddings = {}
-        print(len(config.graph.nodes()))
-        # print(self.w2v_model.wv.index_to_key)  # ['2254', '13', '2415'..
-        # print(self.skip_gram_model.wv.key_to_index)  # {'2254': 0, '2415': 1, '9': 2...
-        vocab = self.skip_gram_model.wv.key_to_index   # dict类型
-
-        nodes_tensor = config.graph.nodes()
-        nodes_list = nodes_tensor.tolist()
-        for i, node in enumerate(nodes_list):
-            # index = vocab[str(node)]  # node是int类型的节点编号，而vocab的key是str
-            embeddings[int(node)] = self.skip_gram_model.wv[str(node)]  # 为了便于后续mlp预测，采用int索引
-        return embeddings
-
     def save_embeddings(self, config, emb_path):
         # self.all_walks = self.walker.simulate_walks(num_walks=config.num_walks, walk_length=config.walk_length)
         # self.skip_gram_model = torch.load('temp.pt')
