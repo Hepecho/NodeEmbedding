@@ -56,8 +56,9 @@ if __name__ == "__main__":
         # 在训练embedding阶段，我们采用word2vec的无监督任务
     elif args.dataset == "ogbn-arxiv":
         G, labels = node_prediction_data()
-        if args.model == 'deepwalk':
+        if args.model == 'deepwalk' or args.model == 'node2vec':
             # 变成无向图 为每条边都创建两个方向的边
+            # 防止walk不足长度填充-1
             G = dgl.to_bidirected(G)
         config.graph = G
     else:

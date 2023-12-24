@@ -1,0 +1,38 @@
+Namespace(seed=1, dataset='ogbn-arxiv', emb_dir='saved_model', model='node2vec', logdir='log')
+{'model_name': 'Node2Vec', 'graph': None, 'log_path': 'ogbn-arxiv/log/Node2Vec', 'device': device(type='cuda'), 'seed': 1, 'walk_length': 10, 'num_walks': 40, 'use_api': True, 'p': 4, 'q': 0.5, 'embed_size': 128, 'window_size': 5, 'learning_rate': 0.025, 'iter': 5, 'workers': 3, 'sg': 1, 'hs': 1, 'min_count': 0}
+======================Start simulate walks [Sun Dec 24 20:48:44 2023]======================
+torch.Size([6773720, 10])
+======================Finish simulate walks [Sun Dec 24 20:50:39 2023]======================
+======================Start Train Model [Sun Dec 24 20:50:39 2023]======================
+======================Finish Train Model [Sun Dec 24 21:19:01 2023]======================
+python src/evaluate.py --model node2vec --dataset ogbn-arxiv --runs 5 --epochs 200
+All runs:
+Highest Train: 79.77 ± 0.07
+Highest Valid: 71.75 ± 0.09
+  Final Train: 78.82 ± 0.76
+   Final Test: 70.70 ± 0.18
+Namespace(seed=1, dataset='ogbl-ddi', emb_dir='saved_model', model='node2vec', logdir='log')
+{'model_name': 'Node2Vec', 'graph': None, 'log_path': 'ogbl-ddi/log/Node2Vec', 'device': device(type='cuda'), 'seed': 1, 'walk_length': 10, 'num_walks': 80, 'use_api': True, 'p': 4, 'q': 0.5, 'embed_size': 128, 'window_size': 5, 'learning_rate': 0.025, 'iter': 5, 'workers': 3, 'sg': 1, 'hs': 1, 'min_count': 0}
+======================Start simulate walks [Sun Dec 24 21:28:09 2023]======================
+torch.Size([341360, 10])
+======================Finish simulate walks [Sun Dec 24 21:28:17 2023]======================
+======================Start Train Model [Sun Dec 24 21:28:17 2023]======================
+======================Finish Train Model [Sun Dec 24 21:29:08 2023]======================
+Hits@10
+All runs:
+Highest Train: 20.23 ± 1.85
+Highest Valid: 17.84 ± 1.67
+  Final Train: 20.20 ± 1.86
+   Final Test: 10.25 ± 2.84
+Hits@20
+All runs:
+Highest Train: 26.58 ± 1.82
+Highest Valid: 23.67 ± 1.67
+  Final Train: 26.57 ± 1.82
+   Final Test: 14.65 ± 2.27
+Hits@30
+All runs:
+Highest Train: 32.13 ± 1.68
+Highest Valid: 28.92 ± 1.66
+  Final Train: 32.13 ± 1.68
+   Final Test: 17.38 ± 1.87

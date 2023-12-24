@@ -17,10 +17,6 @@ python src/evaluate.py --dataset obgn-arxiv --model deepwalk --runs 5 --epochs 2
 ```
 The result will be output in the console:
 ```
-Highest Train: 79.66
-Highest Valid: 71.47
-  Final Train: 78.27
-   Final Test: 70.40
 All runs:
 Highest Train: 79.67 ± 0.07
 Highest Valid: 71.43 ± 0.12

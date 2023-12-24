@@ -94,7 +94,7 @@ class Model:
 
         localtime = time.asctime(time.localtime(time.time()))
         logx.msg('======================Finish Train Model [{}]======================'.format(localtime))
-        torch.save(self.skip_gram_model, 'temp.pt')
+        # torch.save(self.skip_gram_model, 'temp.pt')
         return self.skip_gram_model
 
     def save_embeddings(self, config, emb_path):

@@ -18,9 +18,10 @@ class Config(object):
 
         # self.dropout = 0.5                                              # 随机失活
         self.walk_length = 10                                           # 游走路径长度
-        self.num_walks = 40                                             # 每个节点生成的游走路径数量
+        self.num_walks = 80                                             # 每个节点生成的游走路径数量 40 for ognn-arxiv
         # self.num_epochs = 20                                            # epoch数
         # self.batch_size = 2048                                          # mini-batch大小
+        self.use_api = True                                             # 是否使用node2vec_random_walk api
 
         # node2vec控制参数
         self.p = 4
@@ -40,7 +41,7 @@ class Config(object):
 class Model:
     """Node2Vec"""
     def __init__(self, config):
-        self.walker = Node2VecWalker(config.graph, config.p, config.q)
+        self.walker = Node2VecWalker(config.graph, config.p, config.q, config.use_api)
         self.all_walks = None
         self.skip_gram_model = Word2Vec(vector_size=config.embed_size, window=config.window_size, sg=config.sg,
                                         hs=config.hs, min_count=config.min_count, workers=config.workers,
@@ -54,7 +55,7 @@ class Model:
         # proteins torch.Size([10602720, 10]) num_walks = 80
         # arxiv torch.Size([13547440, 10]) num_walks = 80
         logx.msg(str(self.all_walks.shape))
-        torch.save(self.all_walks, 'all_walks.pt')
+        # torch.save(self.all_walks, 'all_walks.pt')
         localtime = time.asctime(time.localtime(time.time()))
         logx.msg('======================Finish simulate walks [{}]======================'.format(localtime))
 
@@ -70,10 +71,11 @@ class Model:
                                    epochs=config.iter)
         localtime = time.asctime(time.localtime(time.time()))
         logx.msg('======================Finish Train Model [{}]======================'.format(localtime))
-        torch.save(self.skip_gram_model, 'skip_gram.pt')
+        # torch.save(self.skip_gram_model, 'skip_gram.pt')
         return self.skip_gram_model
 
-    def save_embedding(self, config, emb_path):
+    def save_embeddings(self, config, emb_path):
+        # self.skip_gram_model = torch.load('skip_gram.pt')
         nodes_tensor = config.graph.nodes()
         nodes_list = nodes_tensor.tolist()
         vocab = self.skip_gram_model.wv.index_to_key

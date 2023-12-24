@@ -56,13 +56,13 @@ torch.Size([6773720, 10])
 ======================Finish simulate walks [Sat Dec 16 21:02:30 2023]======================
 ======================Start Train Model [Sat Dec 16 21:02:30 2023]======================
 ======================Finish Train Model [Sat Dec 16 21:29:10 2023]======================
-python src/evaluate_mlp.py --runs 5 --epochs 200 --dataset ogbn-arxiv
-Highest Train: 79.66
-Highest Valid: 71.47
-  Final Train: 78.27
-   Final Test: 70.40
+python src/evaluate.py --runs 5 --epochs 200 --dataset ogbn-arxiv
 All runs:
 Highest Train: 79.67 ± 0.07
 Highest Valid: 71.43 ± 0.12
   Final Train: 78.11 ± 0.46
    Final Test: 70.25 ± 0.17
+Namespace(seed=1, dataset='ogbl-ddi', emb_dir='saved_model', model='deepwalk', logdir='log')
+{'model_name': 'DeepWalk', 'graph': None, 'log_path': 'ogbl-ddi/log/DeepWalk', 'device': device(type='cuda'), 'seed': 1, 'walk_length': 10, 'num_walks': 40, 'embed_size': 128, 'window_size': 5, 'learning_rate': 0.025, 'iter': 5, 'workers': 3, 'sg': 1, 'hs': 1, 'min_count': 0}
+======================Start simulate walks [Sat Dec 23 13:00:17 2023]======================
+torch.Size([170680, 10])

@@ -14,9 +14,8 @@ def plot_graph(src, dst, node_pos):
     edgelist = zip(src, dst)
     for i, j in edgelist:
         g.add_edge(i, j)
-    # pos_3d = nx.spring_layout(g, dim=3, k=0.5)
     nx.draw(g, with_labels=g.nodes, pos=node_pos)
-    # plt.savefig('test.png')
+    plt.savefig('image/nx.png')
     plt.show()
 
 
@@ -59,10 +58,14 @@ if __name__ == '__main__':
 
         # print(node_pos[4000])
         plot_graph(src, dst, node_pos)
-        # print(config.graph)
-        # 在训练embedding阶段，我们采用word2vec的无监督任务
+
     elif args.dataset == "ogbn-arxiv":
         g, labels = node_prediction_data()
+        # 有向图
+        src, dst = g.edges()
+        node_list = g.nodes().tolist()
+        node_pos = dict(zip(node_list, node_pos))
+        plot_graph(src, dst, node_pos)
 
     else:
         pass
